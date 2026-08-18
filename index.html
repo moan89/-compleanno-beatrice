@@ -31,20 +31,21 @@ body:before {
   background-size: 18px 18px; z-index: -2;
 }
 
-/* --- EFFETTO PALLONCINI FLUTTUANTI --- */
+/* --- EFFETTO PALLONCINI FLUTTUANTI IN PRIMO PIANO --- */
 .floating-balloons {
-  position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden;
+  /* Portati in primo piano (z-index: 20) in modo che passino SOPRA la card */
+  position: fixed; inset: 0; pointer-events: none; z-index: 20; overflow: hidden;
 }
 .float-b {
   position: absolute; bottom: -120px;
-  border-radius: 50% 50% 48% 48%; opacity: 0.35; /* Discreti e trasparenti */
+  border-radius: 50% 50% 48% 48%; opacity: 0.4; /* Discreti e trasparenti */
   animation: floatUp linear infinite;
 }
-.float-b:before { /* Il nodino del palloncino */
+.float-b:before { 
   content:""; position:absolute; bottom:-4px; left:calc(50% - 3px);
   width:6px; height:6px; background:inherit; transform:rotate(45deg);
 }
-.float-b:after { /* Il filo */
+.float-b:after { 
   content:""; position:absolute; bottom:-30px; left:50%;
   height:30px; border-left:1px solid rgba(118, 81, 55, 0.3);
 }
@@ -53,7 +54,6 @@ body:before {
   50% { transform: translateY(-60vh) rotate(4deg); }
   100% { transform: translateY(-120vh) rotate(-4deg); }
 }
-/* Colori e posizioni ispirati all'orsetto */
 .fb1 { background: #ead8bd; left: 10%; width: 45px; height: 58px; animation-duration: 14s; animation-delay: 0s; }
 .fb2 { background: #c8a57a; left: 25%; width: 35px; height: 45px; animation-duration: 18s; animation-delay: 3s; }
 .fb3 { background: #8d6445; left: 75%; width: 50px; height: 65px; animation-duration: 15s; animation-delay: 6s; }
@@ -67,14 +67,13 @@ body:before {
   padding: 22px; position: relative; z-index: 10;
 }
 .card {
-  width: min(680px, 100%); background: rgba(255,253,249,.93); /* Leggermente più trasparente per vedere i palloncini sotto */
+  width: min(680px, 100%); background: rgba(255,253,249,.96); 
   border: 1px solid #c6a16e; box-shadow: 0 18px 60px rgba(90,65,40,.12);
   position: relative; overflow: hidden; text-align: center;
   padding-bottom: 20px;
 }
-.corner { position: absolute; width: 92px; height: 92px; border-color: #b88a52; border-style: solid; opacity: .9; }
-.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; } .tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
-.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; } .br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+
+/* Rimossi gli stili delle cornici angolari per non sporcare la tua immagine */
 
 .art { width: 100%; display: block; border-bottom: 1px solid var(--soft); margin-bottom: 20px; }
 
@@ -109,7 +108,7 @@ body:before {
   line-height: 1;
 }
 canvas#minigame {
-  background: #438B57;
+  background: #438B57; 
   display: block; margin: 0 auto; border: 3px solid var(--gold2); border-radius: 6px;
   image-rendering: pixelated; width: 100%; height: auto; touch-action: none;
   box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
@@ -126,7 +125,7 @@ canvas#minigame {
 </head>
 <body>
 
-<!-- Audio Player (Nascosto, parte in automatico al primo tocco) -->
+<!-- Audio Player -->
 <audio id="bgMusic" loop autoplay>
   <source src="musica.mp3.mp3" type="audio/mpeg">
 </audio>
@@ -143,7 +142,8 @@ canvas#minigame {
 
 <main class="screen">
   <section class="card">
-    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    
+    <!-- Cornici rimosse da qui! -->
     
     <img class="art" src="IMG_0028.jpeg" alt="Invito al compleanno di Beatrice">
 
@@ -162,7 +162,7 @@ canvas#minigame {
           💬 Conferma su WhatsApp
         </a>
         
-        <!-- Pulsante per caricare le foto (inserisci qui il link di Google Moduli) -->
+        <!-- Pulsante per caricare le foto -->
         <a class="btn photo" target="_blank" rel="noopener"
            href="https://docs.google.com/forms/d/e/1FAIpQLSeHuxoedHk7jMZyt1jwzBW35Fw8J8rkKwfHJkaQAGolaN7ySQ/viewform?usp=header">
           📸 Carica qui le tue foto!
@@ -328,10 +328,8 @@ function drawGame() {
 
   // 4. Disegna Giocatore (Foto o Emoji di backup)
   if(playerImg.complete && playerImg.naturalWidth !== 0) {
-    // Foto ingrandita da 34 a 55 pixel!
     ctx.drawImage(playerImg, player.x - 27, player.y - 27, 55, 55);
   } else {
-    // Emoji
     ctx.font = "40px Arial";
     ctx.fillText("👧", player.x, player.y);
   }
