@@ -4,102 +4,97 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f7f1e8">
-<title>Il  di Beatrice</title>
+<title>Il compleanno di Beatrice</title>
 <style>
-:root{
-  --cream:#fbf8f2; --paper:#fffdf9; --gold:#b88a52; --gold2:#9f7443;
-  --brown:#765137; --soft:#eadfce;
+:root {
+  --cream: #fbf8f2; --paper: #fffdf9; --gold: #b88a52; --gold2: #9f7443;
+  --brown: #765137; --soft: #eadfce; --retro-blue: #87CEEB; --retro-green: #90EE90;
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; background:var(--cream); color:var(--brown);
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--cream); color: var(--brown);
   font-family: Georgia, "Times New Roman", serif;
 }
-body:before{
-  content:""; position:fixed; inset:0; pointer-events:none; opacity:.18;
-  background-image:radial-gradient(#b88a52 0.45px, transparent 0.45px);
-  background-size:18px 18px;
+body:before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .18;
+  background-image: radial-gradient(#b88a52 0.45px, transparent 0.45px);
+  background-size: 18px 18px;
 }
-.screen{
-  min-height:100svh; display:flex; align-items:center; justify-content:center;
-  padding:22px;
+.screen {
+  min-height: 100svh; display: flex; align-items: center; justify-content: center;
+  padding: 22px;
 }
-.card{
-  width:min(680px,100%); background:rgba(255,253,249,.96);
-  border:1px solid #c6a16e; box-shadow:0 18px 60px rgba(90,65,40,.12);
-  position:relative; overflow:hidden;
+.card {
+  width: min(680px, 100%); background: rgba(255,253,249,.96);
+  border: 1px solid #c6a16e; box-shadow: 0 18px 60px rgba(90,65,40,.12);
+  position: relative; overflow: hidden; text-align: center;
+  padding-bottom: 20px;
 }
-.corner{position:absolute;width:92px;height:92px;border-color:#b88a52;border-style:solid;opacity:.9}
-.tl{top:12px;left:12px;border-width:1px 0 0 1px}.tr{top:12px;right:12px;border-width:1px 1px 0 0}
-.bl{bottom:12px;left:12px;border-width:0 0 1px 1px}.br{bottom:12px;right:12px;border-width:0 1px 1px 0}
-.intro{padding:44px 28px 34px;text-align:center}
-.kicker{letter-spacing:.28em;text-transform:uppercase;font-size:14px;margin-bottom:10px}
-h1{font-size:clamp(30px,7vw,50px);font-weight:400;margin:0 0 6px}
-.name{font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(62px,16vw,105px);line-height:.95;color:var(--gold)}
-.subtitle{font-size:16px;letter-spacing:.08em;margin:16px 0 28px}
-.game-title{font-size:22px;margin-bottom:7px}
-.game-help{font-size:15px;opacity:.82;margin-bottom:18px}
-.balloons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;min-height:105px}
-.balloon{
-  width:52px;height:67px;border-radius:50% 50% 48% 48%; border:0; cursor:pointer;
-  box-shadow:inset -7px -9px 10px rgba(80,45,20,.12), 0 5px 10px rgba(80,45,20,.10);
-  position:relative; transition:.2s transform;
+.corner { position: absolute; width: 92px; height: 92px; border-color: #b88a52; border-style: solid; opacity: .9; }
+.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; } .tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; } .br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+
+.music-toggle {
+  margin: 20px auto 10px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 8px 15px; border-radius: 20px; background: var(--soft);
+  color: var(--brown); border: none; cursor: pointer; font-family: inherit; font-size: 14px;
 }
-.balloon:hover{transform:translateY(-5px)}
-.balloon:after{content:"";position:absolute;bottom:-26px;left:50%;height:27px;border-left:1px solid #aa8a68}
-.balloon:before{content:"";position:absolute;bottom:-4px;left:calc(50% - 3px);width:6px;height:6px;background:inherit;transform:rotate(45deg)}
-.b1{background:#ead8bd}.b2{background:#c8a57a}.b3{background:#8d6445}.b4{background:#efe7d9}.b5{background:#a77a51}.b6{background:#d9c3a3}
-.balloon.popped{transform:scale(0);opacity:0;pointer-events:none}
-#gameMessage{min-height:24px;font-size:16px;color:var(--gold2);font-weight:bold}
-.invite{display:none;border-top:1px solid var(--soft);padding:32px 26px 38px;text-align:center;animation:rise .7s ease both}
-.invite.show{display:block}
-@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.date{font-size:22px;letter-spacing:.15em;text-transform:uppercase;margin:4px 0 2px}
-.time{font-size:17px;letter-spacing:.12em;margin-bottom:22px}
-.place{font-size:21px;margin-bottom:4px}.address{font-size:16px;opacity:.82}
-.buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:24px}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;min-height:46px;
-  padding:11px 17px;border-radius:999px;border:1px solid var(--gold);
-  color:#fff;background:var(--gold);text-decoration:none;font-family:inherit;font-size:15px;
+.art { width: 100%; display: block; border-bottom: 1px solid var(--soft); margin-bottom: 20px; }
+
+.invite { padding: 10px 26px 20px; }
+.date { font-size: 22px; letter-spacing: .15em; text-transform: uppercase; margin: 4px 0 2px; }
+.time { font-size: 17px; letter-spacing: .12em; margin-bottom: 22px; }
+.place { font-size: 21px; margin-bottom: 4px; } 
+.address { font-size: 16px; opacity: .82; }
+
+.buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 46px;
+  padding: 11px 17px; border-radius: 999px; border: 1px solid var(--gold);
+  color: #fff; background: var(--gold); text-decoration: none; font-family: inherit; font-size: 15px;
 }
-.btn.secondary{background:transparent;color:var(--gold2)}
-.countdown{margin:26px auto 0;padding:17px;border-top:1px solid var(--soft);border-bottom:1px solid var(--soft)}
-.countdown strong{display:block;font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
-#timer{font-size:24px;letter-spacing:.06em}
-.art{width:100%;display:block;border-top:1px solid var(--soft)}
-.footer{font-size:12px;opacity:.6;margin-top:18px}
-canvas{position:fixed;inset:0;pointer-events:none;z-index:20}
-@media(max-width:430px){
-  .intro{padding:34px 18px 28px}.invite{padding:28px 18px 34px}
-  .balloon{width:45px;height:59px}.buttons .btn{width:100%}
+.btn.secondary { background: transparent; color: var(--gold2); }
+.btn.photo { background: var(--brown); border-color: var(--brown); color: white; width: 100%; max-width: 300px; margin-top: 10px;}
+
+.countdown { margin: 26px auto 26px; padding: 17px; border-top: 1px solid var(--soft); border-bottom: 1px solid var(--soft); }
+.countdown strong { display: block; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
+#timer { font-size: 24px; letter-spacing: .06em; }
+
+/* Stile per il minigioco retrò */
+.game-container {
+  margin: 20px auto; padding: 10px; background: #222; border-radius: 8px;
+  width: min(100%, 340px);
+}
+.game-title { color: #fff; font-family: monospace; font-size: 14px; margin-bottom: 8px; letter-spacing: 1px; }
+canvas#minigame {
+  background: linear-gradient(to bottom, var(--retro-blue) 60%, var(--retro-green) 40%);
+  display: block; margin: 0 auto; border: 4px solid #555; border-radius: 4px;
+  image-rendering: pixelated; width: 100%; height: auto; touch-action: none;
+}
+.game-instructions { color: #aaa; font-family: monospace; font-size: 11px; margin-top: 8px; }
+
+.footer { font-size: 12px; opacity: .6; margin-top: 18px; }
+
+@media(max-width:430px) {
+  .invite { padding: 15px 18px 25px; }
+  .buttons .btn { width: 100%; }
 }
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
+
+<!-- Audio Player -->
+<audio id="bgMusic" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
 <main class="screen">
   <section class="card">
     <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-    <div class="intro">
-      <div class="kicker">Il compleanno di</div>
-      <h1 class="name">Beatrice</h1>
-      <div class="subtitle">Una piccola sorpresa prima della festa…</div>
-
-      <div class="game-title">🧸 Trova il palloncino giusto!</div>
-      <div class="game-help">Tocca un palloncino per scoprire l'invito.</div>
-      <div class="balloons" id="balloons">
-        <button class="balloon b1" aria-label="Palloncino"></button>
-        <button class="balloon b2" aria-label="Palloncino"></button>
-        <button class="balloon b3" aria-label="Palloncino"></button>
-        <button class="balloon b4" aria-label="Palloncino"></button>
-        <button class="balloon b5" aria-label="Palloncino"></button>
-        <button class="balloon b6" aria-label="Palloncino"></button>
-      </div>
-      <div id="gameMessage"></div>
-    </div>
-
+    
+    <button class="music-toggle" id="musicBtn">🎵 Riproduci Musica</button>
+    
     <img class="art" src="invito-beatrice.jpg" alt="Invito al compleanno di Beatrice">
 
     <div class="invite" id="invite">
@@ -118,100 +113,154 @@ canvas{position:fixed;inset:0;pointer-events:none;z-index:20}
            href="https://wa.me/?text=Confermo%20la%20mia%20presenza%20al%20compleanno%20di%20Beatrice%20del%205%20settembre%20alle%2016%3A00.">
           💬 Conferma su WhatsApp
         </a>
+        
+        <!-- Pulsante per caricare le foto -->
+        <a class="btn photo" target="_blank" rel="noopener"
+           href="https://www.icloud.com/iclouddrive/028zLL2yf9zbdWrV8y0fqWVBw#Foto">
+          📸 Carica qui le tue foto!
+        </a>
       </div>
 
       <div class="countdown">
         <strong>Manca poco!</strong>
         <div id="timer">Caricamento…</div>
       </div>
+
+      <!-- Minigioco Retrò -->
+      <div class="game-container">
+        <div class="game-title">✨ BEATRICE'S ADVENTURE ✨</div>
+        <canvas id="minigame" width="300" height="200"></canvas>
+        <div class="game-instructions">Tocca a destra o sinistra (o usa le frecce) per raccogliere i dolcetti!</div>
+      </div>
+
       <div class="footer">Ti aspettiamo per festeggiare insieme 🎈</div>
     </div>
   </section>
 </main>
-<canvas id="confetti"></canvas>
 
 <script>
-const balloons=[...document.querySelectorAll('.balloon')];
-const msg=document.getElementById('gameMessage');
-const invite=document.getElementById('invite');
-let opened=false;
+// Gestione Musica
+const musicBtn = document.getElementById('musicBtn');
+const bgMusic = document.getElementById('bgMusic');
+let isPlaying = false;
 
-// One random balloon is the "right" one.
-const winner=Math.floor(Math.random()*balloons.length);
-
-balloons.forEach((b,i)=>{
-  b.addEventListener('click',()=>{
-    if(opened) return;
-    if(i!==winner){
-      b.classList.add('popped');
-      msg.textContent='Quasi! Prova con un altro palloncino 🎈';
-    }else{
-      opened=true;
-      b.classList.add('popped');
-      msg.textContent='🎉 Hai trovato la sorpresa!';
-      invite.classList.add('show');
-      launchConfetti();
-      setTimeout(()=>invite.scrollIntoView({behavior:'smooth',block:'start'}),350);
-    }
-  });
+musicBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    bgMusic.pause();
+    musicBtn.textContent = '🎵 Riproduci Musica';
+  } else {
+    bgMusic.play().catch(e => console.log("Impossibile riprodurre l'audio."));
+    musicBtn.textContent = '⏸ Pausa Musica';
+  }
+  isPlaying = !isPlaying;
 });
 
+// Gestione Timer
 function updateTimer(){
-  const target=new Date('2026-09-05T16:00:00+02:00').getTime();
-  const now=Date.now(), diff=target-now;
-  const el=document.getElementById('timer');
-  if(diff<=0){el.textContent='È il momento di festeggiare! 🎂';return;}
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor(diff%86400000/3600000);
-  const m=Math.floor(diff%3600000/60000);
-  const s=Math.floor(diff%60000/1000);
-  el.textContent=`${d} giorni · ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+  const target = new Date('2026-09-05T16:00:00+02:00').getTime();
+  const now = Date.now(), diff = target - now;
+  const el = document.getElementById('timer');
+  if(diff <= 0){ el.textContent = 'È il momento di festeggiare! 🎂'; return; }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const s = Math.floor(diff % 60000 / 1000);
+  el.textContent = `${d} giorni · ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
 }
-updateTimer(); setInterval(updateTimer,1000);
+updateTimer(); setInterval(updateTimer, 1000);
 
-document.getElementById('calendarBtn').addEventListener('click',e=>{
+// Calendario
+document.getElementById('calendarBtn').addEventListener('click', e => {
   e.preventDefault();
-  const ics=`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Invito Beatrice//IT
-BEGIN:VEVENT
-UID:beatrice-20260905@example.local
-DTSTAMP:20260818T100000Z
-DTSTART:20260905T160000
-DTEND:20260905T190000
-SUMMARY:Il compleanno di Beatrice
-LOCATION:Circolo Velico Torre di Maremma, Montalto di Castro VT
-DESCRIPTION:Compleanno di Beatrice
-END:VEVENT
-END:VCALENDAR`;
-  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='Compleanno-Beatrice.ics'; a.click();
+  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Invito Beatrice//IT\nBEGIN:VEVENT\nUID:beatrice-20260905@example.local\nDTSTAMP:20260818T100000Z\nDTSTART:20260905T160000\nDTEND:20260905T190000\nSUMMARY:Il compleanno di Beatrice\nLOCATION:Circolo Velico Torre di Maremma, Montalto di Castro VT\nDESCRIPTION:Compleanno di Beatrice\nEND:VEVENT\nEND:VCALENDAR`;
+  const blob = new Blob([ics], {type: 'text/calendar;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'Compleanno-Beatrice.ics'; a.click();
   URL.revokeObjectURL(url);
 });
 
-function launchConfetti(){
-  const c=document.getElementById('confetti'),ctx=c.getContext('2d');
-  c.width=innerWidth;c.height=innerHeight;
-  const pieces=Array.from({length:100},()=>({
-    x:innerWidth/2+(Math.random()-.5)*100,y:innerHeight*.38,
-    vx:(Math.random()-.5)*9,vy:Math.random()*-8-3,
-    g:.18+Math.random()*.08,r:3+Math.random()*4,a:1
-  }));
-  let frame=0;
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    pieces.forEach(p=>{
-      p.x+=p.vx;p.vy+=p.g;p.y+=p.vy;p.a-=.008;
-      ctx.globalAlpha=Math.max(0,p.a);
-      ctx.fillStyle=['#b88a52','#8d6445','#ead8bd','#d9c3a3'][frame%4];
-      ctx.fillRect(p.x,p.y,p.r,p.r*1.8);
-    });
-    frame++;
-    if(frame<150) requestAnimationFrame(draw); else ctx.clearRect(0,0,c.width,c.height);
-  }
-  draw();
+// Minigioco Retrò - Beatrice's Adventure
+const canvas = document.getElementById('minigame');
+const ctx = canvas.getContext('2d');
+let player = { x: 130, y: 150, width: 40, speed: 5 };
+let items = [];
+let score = 0;
+let gameFrame = 0;
+let gameOver = false;
+
+// Controlli da tastiera e touch
+let leftPressed = false;
+let rightPressed = false;
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowLeft') leftPressed = true;
+  if(e.key === 'ArrowRight') rightPressed = true;
+});
+document.addEventListener('keyup', (e) => {
+  if(e.key === 'ArrowLeft') leftPressed = false;
+  if(e.key === 'ArrowRight') rightPressed = false;
+});
+canvas.addEventListener('touchstart', handleTouch, {passive: false});
+canvas.addEventListener('touchmove', handleTouch, {passive: false});
+canvas.addEventListener('touchend', () => { leftPressed = false; rightPressed = false; });
+
+function handleTouch(e) {
+  e.preventDefault(); // Evita lo scroll mentre si gioca
+  const rect = canvas.getBoundingClientRect();
+  const touchX = e.touches[0].clientX - rect.left;
+  if(touchX < canvas.clientWidth / 2) { leftPressed = true; rightPressed = false; }
+  else { rightPressed = true; leftPressed = false; }
 }
+
+function spawnItem() {
+  const types = ['🍬', '🎈', '🍰'];
+  const type = types[Math.floor(Math.random() * types.length)];
+  const x = Math.random() * (canvas.width - 20);
+  items.push({ x: x, y: -20, type: type, speed: 2 + Math.random() * 2 });
+}
+
+function drawGame() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Muovi player
+  if(leftPressed && player.x > 0) player.x -= player.speed;
+  if(rightPressed && player.x < canvas.width - player.width) player.x += player.speed;
+
+  // Disegna Player (Bimba)
+  ctx.font = "30px Arial";
+  ctx.fillText("👧", player.x, player.y + 30);
+
+  // Gestione Oggetti
+  if(gameFrame % 40 === 0) spawnItem();
+
+  for(let i = 0; i < items.length; i++) {
+    let item = items[i];
+    item.y += item.speed;
+    ctx.fillText(item.type, item.x, item.y);
+
+    // Collisione
+    if(item.y > player.y && item.y < player.y + 30 && item.x > player.x - 20 && item.x < player.x + 30) {
+      score += 10;
+      items.splice(i, 1);
+      i--;
+    } else if (item.y > canvas.height) {
+      items.splice(i, 1);
+      i--;
+    }
+  }
+
+  // Disegna Punteggio
+  ctx.fillStyle = "black";
+  ctx.font = "16px monospace";
+  ctx.fillText("Score: " + score, 10, 20);
+
+  gameFrame++;
+  requestAnimationFrame(drawGame);
+}
+
+// Avvia il gioco
+drawGame();
+
 </script>
 </body>
 </html>
