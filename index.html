@@ -8,7 +8,7 @@
 <style>
 :root {
   --cream: #fbf8f2; --paper: #fffdf9; --gold: #b88a52; --gold2: #9f7443;
-  --brown: #765137; --soft: #eadfce; --retro-blue: #87CEEB; --retro-green: #90EE90;
+  --brown: #765137; --soft: #eadfce; 
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -35,16 +35,9 @@ body:before {
 .tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; } .tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
 .bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; } .br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
 
-.music-toggle {
-  margin: 20px auto 10px; display: inline-flex; align-items: center; justify-content: center;
-  padding: 8px 15px; border-radius: 20px; background: var(--soft);
-  color: var(--brown); border: none; cursor: pointer; font-family: inherit; font-size: 14px;
-}
 .art { width: 100%; display: block; border-bottom: 1px solid var(--soft); margin-bottom: 20px; }
 
 .invite { padding: 10px 26px 20px; }
-.date { font-size: 22px; letter-spacing: .15em; text-transform: uppercase; margin: 4px 0 2px; }
-.time { font-size: 17px; letter-spacing: .12em; margin-bottom: 22px; }
 .place { font-size: 21px; margin-bottom: 4px; } 
 .address { font-size: 16px; opacity: .82; }
 
@@ -61,14 +54,14 @@ body:before {
 .countdown strong { display: block; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
 #timer { font-size: 24px; letter-spacing: .06em; }
 
-/* Stile per il minigioco retrò */
+/* Stile per il minigioco retrò Top-Down */
 .game-container {
   margin: 20px auto; padding: 10px; background: #222; border-radius: 8px;
   width: min(100%, 340px);
 }
 .game-title { color: #fff; font-family: monospace; font-size: 14px; margin-bottom: 8px; letter-spacing: 1px; }
 canvas#minigame {
-  background: linear-gradient(to bottom, var(--retro-blue) 60%, var(--retro-green) 40%);
+  background: #329c58; /* Verde prato */
   display: block; margin: 0 auto; border: 4px solid #555; border-radius: 4px;
   image-rendering: pixelated; width: 100%; height: auto; touch-action: none;
 }
@@ -84,8 +77,8 @@ canvas#minigame {
 </head>
 <body>
 
-<!-- Audio Player -->
-<audio id="bgMusic" loop>
+<!-- Audio Player (Nascosto, parte in automatico al primo tocco) -->
+<audio id="bgMusic" loop autoplay>
   <source src="musica.mp3.mp3" type="audio/mpeg">
 </audio>
 
@@ -93,13 +86,9 @@ canvas#minigame {
   <section class="card">
     <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
     
-    <button class="music-toggle" id="musicBtn">🎵 Riproduci Musica</button>
-    
     <img class="art" src="IMG_0028.jpeg" alt="Invito al compleanno di Beatrice">
 
     <div class="invite" id="invite">
-      <div class="date">Sabato 05 settembre</div>
-      <div class="time">Dalle ore 16:00</div>
       <div class="place">Circolo Velico Torre di Maremma</div>
       <div class="address">01014 Montalto di Castro VT</div>
 
@@ -126,11 +115,11 @@ canvas#minigame {
         <div id="timer">Caricamento…</div>
       </div>
 
-      <!-- Minigioco Retrò -->
+      <!-- Minigioco Retrò (Visuale dall'alto) -->
       <div class="game-container">
-        <div class="game-title">✨ BEATRICE'S ADVENTURE ✨</div>
-        <canvas id="minigame" width="300" height="200"></canvas>
-        <div class="game-instructions">Tocca a destra o sinistra (o usa le frecce) per raccogliere i dolcetti!</div>
+        <div class="game-title">✨ BEATRICE IN THE PARK ✨</div>
+        <canvas id="minigame" width="300" height="250"></canvas>
+        <div class="game-instructions">Tocca il prato per muoverti e raccogliere le sorprese!</div>
       </div>
 
       <div class="footer">Ti aspettiamo per festeggiare insieme 🎈</div>
@@ -139,21 +128,15 @@ canvas#minigame {
 </main>
 
 <script>
-// Gestione Musica
-const musicBtn = document.getElementById('musicBtn');
+// Trucco per avviare la musica al primo tocco dello schermo
 const bgMusic = document.getElementById('bgMusic');
-let isPlaying = false;
-
-musicBtn.addEventListener('click', () => {
-  if (isPlaying) {
-    bgMusic.pause();
-    musicBtn.textContent = '🎵 Riproduci Musica';
-  } else {
-    bgMusic.play().catch(e => console.log("Impossibile riprodurre l'audio."));
-    musicBtn.textContent = '⏸ Pausa Musica';
-  }
-  isPlaying = !isPlaying;
-});
+const startAudio = () => {
+  bgMusic.play().catch(e => {}); 
+  document.removeEventListener('click', startAudio);
+  document.removeEventListener('touchstart', startAudio);
+};
+document.addEventListener('click', startAudio);
+document.addEventListener('touchstart', startAudio);
 
 // Gestione Timer
 function updateTimer(){
@@ -179,82 +162,120 @@ document.getElementById('calendarBtn').addEventListener('click', e => {
   URL.revokeObjectURL(url);
 });
 
-// Minigioco Retrò - Beatrice's Adventure
+// Minigioco Retrò - Visuale dall'alto (Top-Down)
 const canvas = document.getElementById('minigame');
 const ctx = canvas.getContext('2d');
-let player = { x: 130, y: 150, width: 40, speed: 5 };
+
+let player = { x: 150, y: 125, speed: 2.5 };
 let items = [];
 let score = 0;
-let gameFrame = 0;
-let gameOver = false;
+let keys = {};
+let touchTarget = null;
 
-// Controlli da tastiera e touch
-let leftPressed = false;
-let rightPressed = false;
-
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'ArrowLeft') leftPressed = true;
-  if(e.key === 'ArrowRight') rightPressed = true;
-});
-document.addEventListener('keyup', (e) => {
-  if(e.key === 'ArrowLeft') leftPressed = false;
-  if(e.key === 'ArrowRight') rightPressed = false;
-});
-canvas.addEventListener('touchstart', handleTouch, {passive: false});
-canvas.addEventListener('touchmove', handleTouch, {passive: false});
-canvas.addEventListener('touchend', () => { leftPressed = false; rightPressed = false; });
-
-function handleTouch(e) {
-  e.preventDefault(); // Evita lo scroll mentre si gioca
-  const rect = canvas.getBoundingClientRect();
-  const touchX = e.touches[0].clientX - rect.left;
-  if(touchX < canvas.clientWidth / 2) { leftPressed = true; rightPressed = false; }
-  else { rightPressed = true; leftPressed = false; }
+// Genera un po' di ciuffi d'erba per l'effetto pixel art retrò
+const grassPatches = [];
+for(let i = 0; i < 40; i++) {
+  grassPatches.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height
+  });
 }
 
+// Funzione per far apparire i dolci
 function spawnItem() {
   const types = ['🍬', '🎈', '🍰'];
-  const type = types[Math.floor(Math.random() * types.length)];
-  const x = Math.random() * (canvas.width - 20);
-  items.push({ x: x, y: -20, type: type, speed: 2 + Math.random() * 2 });
+  items.push({
+    x: 20 + Math.random() * (canvas.width - 40),
+    y: 20 + Math.random() * (canvas.height - 40),
+    type: types[Math.floor(Math.random() * types.length)]
+  });
+}
+// Iniziamo con 4 oggetti sullo schermo
+for(let i=0; i<4; i++) spawnItem();
+
+// Controlli Tastiera
+window.addEventListener('keydown', e => { keys[e.code] = true; touchTarget = null; });
+window.addEventListener('keyup', e => keys[e.code] = false);
+
+// Controlli Touch (Muovi verso il tocco)
+canvas.addEventListener('touchstart', handleTouch, {passive: false});
+canvas.addEventListener('touchmove', handleTouch, {passive: false});
+canvas.addEventListener('touchend', () => touchTarget = null);
+
+function handleTouch(e) {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  touchTarget = {
+    x: (e.touches[0].clientX - rect.left) * scaleX,
+    y: (e.touches[0].clientY - rect.top) * scaleY
+  };
 }
 
 function drawGame() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // 1. Disegna sfondo (Prato retrò)
+  ctx.fillStyle = '#329c58';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#287d46'; // Colore erba più scura
+  grassPatches.forEach(p => {
+    ctx.fillRect(p.x, p.y, 4, 4);
+    ctx.fillRect(p.x - 4, p.y + 4, 4, 4);
+    ctx.fillRect(p.x + 4, p.y + 4, 4, 4);
+  });
 
-  // Muovi player
-  if(leftPressed && player.x > 0) player.x -= player.speed;
-  if(rightPressed && player.x < canvas.width - player.width) player.x += player.speed;
+  // 2. Movimento Giocatore
+  if(keys['ArrowUp'] || keys['KeyW']) player.y -= player.speed;
+  if(keys['ArrowDown'] || keys['KeyS']) player.y += player.speed;
+  if(keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
+  if(keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
 
-  // Disegna Player (Bimba)
-  ctx.font = "30px Arial";
-  ctx.fillText("👧", player.x, player.y + 30);
+  // Movimento Touch
+  if(touchTarget) {
+    const dx = touchTarget.x - player.x;
+    const dy = touchTarget.y - player.y;
+    const distance = Math.sqrt(dx*dx + dy*dy);
+    if(distance > player.speed) {
+      player.x += (dx / distance) * player.speed;
+      player.y += (dy / distance) * player.speed;
+    }
+  }
 
-  // Gestione Oggetti
-  if(gameFrame % 40 === 0) spawnItem();
+  // Muri invisibili
+  if(player.x < 10) player.x = 10;
+  if(player.x > canvas.width - 10) player.x = canvas.width - 10;
+  if(player.y < 10) player.y = 10;
+  if(player.y > canvas.height - 10) player.y = canvas.height - 10;
+
+  // 3. Disegna e gestisci Oggetti
+  ctx.font = "24px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
 
   for(let i = 0; i < items.length; i++) {
     let item = items[i];
-    item.y += item.speed;
     ctx.fillText(item.type, item.x, item.y);
 
-    // Collisione
-    if(item.y > player.y && item.y < player.y + 30 && item.x > player.x - 20 && item.x < player.x + 30) {
+    // Controllo Collisione (se la bimba è vicina all'oggetto)
+    const dist = Math.sqrt(Math.pow(player.x - item.x, 2) + Math.pow(player.y - item.y, 2));
+    if(dist < 25) {
       score += 10;
       items.splice(i, 1);
-      i--;
-    } else if (item.y > canvas.height) {
-      items.splice(i, 1);
+      spawnItem(); // Ne fa apparire uno nuovo subito
       i--;
     }
   }
 
-  // Disegna Punteggio
-  ctx.fillStyle = "black";
-  ctx.font = "16px monospace";
-  ctx.fillText("Score: " + score, 10, 20);
+  // 4. Disegna Bimba (Player)
+  ctx.font = "30px Arial";
+  ctx.fillText("👧", player.x, player.y);
 
-  gameFrame++;
+  // 5. Punteggio
+  ctx.fillStyle = "white";
+  ctx.font = "16px monospace";
+  ctx.textAlign = "left";
+  ctx.fillText("Score: " + score, 10, 25);
+
   requestAnimationFrame(drawGame);
 }
 
