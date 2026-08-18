@@ -54,18 +54,26 @@ body:before {
 .countdown strong { display: block; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
 #timer { font-size: 24px; letter-spacing: .06em; }
 
-/* Stile per il minigioco retrò Top-Down */
+/* Stile per il minigioco aggiornato con i colori dell'invito */
 .game-container {
-  margin: 20px auto; padding: 10px; background: #222; border-radius: 8px;
+  margin: 20px auto; padding: 20px 10px; background: transparent; 
+  border-radius: 8px; border: 1px dashed var(--gold);
   width: min(100%, 340px);
 }
-.game-title { color: #fff; font-family: monospace; font-size: 14px; margin-bottom: 8px; letter-spacing: 1px; }
-canvas#minigame {
-  background: #329c58; /* Verde prato */
-  display: block; margin: 0 auto; border: 4px solid #555; border-radius: 4px;
-  image-rendering: pixelated; width: 100%; height: auto; touch-action: none;
+.game-title { 
+  color: var(--gold); 
+  font-family: "Brush Script MT", "Segoe Script", cursive; 
+  font-size: 32px; 
+  margin-bottom: 10px; 
+  line-height: 1;
 }
-.game-instructions { color: #aaa; font-family: monospace; font-size: 11px; margin-top: 8px; }
+canvas#minigame {
+  background: #438B57; /* Verde prato leggermente più tenue */
+  display: block; margin: 0 auto; border: 3px solid var(--gold2); border-radius: 6px;
+  image-rendering: pixelated; width: 100%; height: auto; touch-action: none;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+}
+.game-instructions { color: var(--brown); font-family: inherit; font-size: 14px; margin-top: 12px; font-style: italic; }
 
 .footer { font-size: 12px; opacity: .6; margin-top: 18px; }
 
@@ -105,7 +113,7 @@ canvas#minigame {
         
         <!-- Pulsante per caricare le foto -->
         <a class="btn photo" target="_blank" rel="noopener"
-           href="LINK_DELLA_TUA_CARTELLA_QUI">
+           href="https://docs.google.com/forms/d/e/1FAIpQLSeHuxoedHk7jMZyt1jwzBW35Fw8J8rkKwfHJkaQAGolaN7ySQ/viewform?usp=header">
           📸 Carica qui le tue foto!
         </a>
       </div>
@@ -117,7 +125,7 @@ canvas#minigame {
 
       <!-- Minigioco Retrò (Visuale dall'alto) -->
       <div class="game-container">
-        <div class="game-title">✨ BEATRICE IN THE PARK ✨</div>
+        <div class="game-title">Beatrice in the Park</div>
         <canvas id="minigame" width="300" height="250"></canvas>
         <div class="game-instructions">Tocca il prato per muoverti e raccogliere le sorprese!</div>
       </div>
@@ -162,7 +170,7 @@ document.getElementById('calendarBtn').addEventListener('click', e => {
   URL.revokeObjectURL(url);
 });
 
-// Minigioco Retrò - Visuale dall'alto (Top-Down)
+// --- Minigioco Retrò ---
 const canvas = document.getElementById('minigame');
 const ctx = canvas.getContext('2d');
 
@@ -172,7 +180,11 @@ let score = 0;
 let keys = {};
 let touchTarget = null;
 
-// Genera un po' di ciuffi d'erba per l'effetto pixel art retrò
+// Caricamento dell'immagine di Beatrice
+const playerImg = new Image();
+playerImg.src = 'beatrice.png';
+
+// Genera erba per effetto prato
 const grassPatches = [];
 for(let i = 0; i < 40; i++) {
   grassPatches.push({
@@ -181,23 +193,22 @@ for(let i = 0; i < 40; i++) {
   });
 }
 
-// Funzione per far apparire i dolci
+// Genera oggetti
 function spawnItem() {
-  const types = ['🍬', '🎈', '🍰'];
+  const types = ['🍬', '🎈', '🍰', '🎁'];
   items.push({
     x: 20 + Math.random() * (canvas.width - 40),
     y: 20 + Math.random() * (canvas.height - 40),
     type: types[Math.floor(Math.random() * types.length)]
   });
 }
-// Iniziamo con 4 oggetti sullo schermo
 for(let i=0; i<4; i++) spawnItem();
 
 // Controlli Tastiera
 window.addEventListener('keydown', e => { keys[e.code] = true; touchTarget = null; });
 window.addEventListener('keyup', e => keys[e.code] = false);
 
-// Controlli Touch (Muovi verso il tocco)
+// Controlli Touch
 canvas.addEventListener('touchstart', handleTouch, {passive: false});
 canvas.addEventListener('touchmove', handleTouch, {passive: false});
 canvas.addEventListener('touchend', () => touchTarget = null);
@@ -214,23 +225,22 @@ function handleTouch(e) {
 }
 
 function drawGame() {
-  // 1. Disegna sfondo (Prato retrò)
-  ctx.fillStyle = '#329c58';
+  // 1. Sfondo Prato
+  ctx.fillStyle = '#438B57';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#287d46'; // Colore erba più scura
+  ctx.fillStyle = '#346d43'; 
   grassPatches.forEach(p => {
     ctx.fillRect(p.x, p.y, 4, 4);
     ctx.fillRect(p.x - 4, p.y + 4, 4, 4);
     ctx.fillRect(p.x + 4, p.y + 4, 4, 4);
   });
 
-  // 2. Movimento Giocatore
+  // 2. Movimento
   if(keys['ArrowUp'] || keys['KeyW']) player.y -= player.speed;
   if(keys['ArrowDown'] || keys['KeyS']) player.y += player.speed;
   if(keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
   if(keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
 
-  // Movimento Touch
   if(touchTarget) {
     const dx = touchTarget.x - player.x;
     const dy = touchTarget.y - player.y;
@@ -241,13 +251,13 @@ function drawGame() {
     }
   }
 
-  // Muri invisibili
-  if(player.x < 10) player.x = 10;
-  if(player.x > canvas.width - 10) player.x = canvas.width - 10;
-  if(player.y < 10) player.y = 10;
-  if(player.y > canvas.height - 10) player.y = canvas.height - 10;
+  // Limiti bordi
+  if(player.x < 15) player.x = 15;
+  if(player.x > canvas.width - 15) player.x = canvas.width - 15;
+  if(player.y < 15) player.y = 15;
+  if(player.y > canvas.height - 15) player.y = canvas.height - 15;
 
-  // 3. Disegna e gestisci Oggetti
+  // 3. Oggetti
   ctx.font = "24px Arial";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -256,32 +266,35 @@ function drawGame() {
     let item = items[i];
     ctx.fillText(item.type, item.x, item.y);
 
-    // Controllo Collisione (se la bimba è vicina all'oggetto)
     const dist = Math.sqrt(Math.pow(player.x - item.x, 2) + Math.pow(player.y - item.y, 2));
     if(dist < 25) {
       score += 10;
       items.splice(i, 1);
-      spawnItem(); // Ne fa apparire uno nuovo subito
+      spawnItem();
       i--;
     }
   }
 
-  // 4. Disegna Bimba (Player)
-  ctx.font = "30px Arial";
-  ctx.fillText("👧", player.x, player.y);
+  // 4. Disegna Giocatore (Foto o Emoji di backup)
+  if(playerImg.complete && playerImg.naturalWidth !== 0) {
+    // Se la foto è caricata, la disegna grande 34x34 pixel
+    ctx.drawImage(playerImg, player.x - 17, player.y - 17, 34, 34);
+  } else {
+    // Se la foto non c'è, usa l'emoji
+    ctx.font = "30px Arial";
+    ctx.fillText("👧", player.x, player.y);
+  }
 
   // 5. Punteggio
   ctx.fillStyle = "white";
-  ctx.font = "16px monospace";
+  ctx.font = "16px Georgia"; // Font aggiornato
   ctx.textAlign = "left";
-  ctx.fillText("Score: " + score, 10, 25);
+  ctx.fillText("Punti: " + score, 10, 25);
 
   requestAnimationFrame(drawGame);
 }
 
-// Avvia il gioco
 drawGame();
-
 </script>
 </body>
 </html>
